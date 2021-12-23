@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from tqdm import tqdm
 
 
 # Build Gaussian image pyramid
@@ -36,7 +37,7 @@ def build_laplacian_pyramid(img, levels):
 def build_video_pyramid(frames):
     lap_video = []
 
-    for i, frame in enumerate(frames):
+    for i, frame in enumerate(tqdm(frames)):
         pyramid = build_laplacian_pyramid(frame, 3)
         for j in range(3):
             if i == 0:

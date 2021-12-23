@@ -14,29 +14,22 @@ freq_max = 1.8
 print("Recopilando imagenes")
 video_frames, frame_ct, fps = preprocessing.read_video("videos/marlon.webm")
 
-# Build Laplacian video pyramid
-#print("Algortitmo de piramide laplaciana...")
+
 print("Procesando información")
 
 lap_video = pyramids.build_video_pyramid(video_frames)
 
-amplified_video_pyramid = []
+amplified_frames = []
 
 for i, video in enumerate(tqdm(lap_video)):
     if i == 0 or i == len(lap_video)-1:
         continue
 
-    # Eulerian magnification with temporal FFT filtering
-    #print("Ejecutando la FFT y la magnificación de Euler...")
     result, fft, frequencies = eulerian.fft_filter(video, freq_min, freq_max, fps)
     lap_video[i] += result
 
-    # Calculate heart rate
-    #print("Calculating heart rate...")
     heart_rate = int(heartrate.find_heart_rate(fft, frequencies, freq_min, freq_max))
 
-# Collapse laplacian pyramid to generate final video
-#print("Frecuencias observadas...")
 amplified_frames = pyramids.collapse_laplacian_video_pyramid(lap_video, frame_ct)
 
 # Output heart rate and final video
